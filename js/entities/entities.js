@@ -22,7 +22,6 @@ game.doorEntity = me.Entity.extend({
         this.renderable.addAnimation("close",  [3,2,1,0]);
         this.renderable.setCurrentAnimation("closed");
         this.z=5;
-        this.alwaysUpdate=true;
     },
 
     /**
@@ -324,6 +323,7 @@ game.finalBossEntity = me.Entity.extend({
         this.alwaysUpdate=true;
         this.renderable.alwaysUpdate=true;
 
+        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
     },
 
     /**
@@ -340,24 +340,6 @@ game.finalBossEntity = me.Entity.extend({
         return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
 
        // this.renderable.setCurrentAnimation("close");
-    },
-        onCollision : function (response, other) {
-                console.log("collision");
-        switch (response.b.body.collisionType) {
-
-            case me.collision.types.ENEMY_OBJECT:
-                    
-                console.log("enemy");
-                return false;
-                break;
-
-            default:
-                // Do not respond to other objects (e.g. coins)
-                return false;
-        }
-
-        // Make the object solid
-        return true;
     }
 });
 
@@ -453,7 +435,6 @@ game.Arrow = me.Entity.extend({
         this.body.setVelocity(15, 15);
         this.body.vel.y=-15;
         this.alwaysUpdate=true;
-        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
     },
 
     update : function (dt) {
@@ -477,7 +458,27 @@ game.Arrow = me.Entity.extend({
      * (called when colliding with other objects)
      */
 
+    onCollision : function (response, other) {
+                console.log("collision");
+        switch (response.b.body.collisionType) {
+            case me.collision.types.WORLD_SHAPE:
 
+                break;
+
+            case me.collision.types.ENEMY_OBJECT:
+                    
+                console.log("enemy");
+                return false;
+                break;
+
+            default:
+                // Do not respond to other objects (e.g. coins)
+                return false;
+        }
+
+        // Make the object solid
+        return true;
+    }
 
 
 });
