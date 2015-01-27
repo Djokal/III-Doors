@@ -303,45 +303,6 @@ game.holeEntity = me.Entity.extend({
 
 
 
-/**
- * Player Entity
- */
-game.finalBossEntity = me.Entity.extend({
-
-    /**
-     * constructor
-     */
-    init:function (x, y, settings) {
-        settings.image="finalboss";
-        this.isArrow="arrow";
-
-        this._super(me.Entity, 'init', [x, y , settings]);
-
-        this.renderable.addAnimation("move",  [0,1,2]);
-        this.renderable.setCurrentAnimation("move",500);
-        this.z=5;
-        this.alwaysUpdate=true;
-        this.renderable.alwaysUpdate=true;
-
-        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
-    },
-
-    /**
-     * update the entity
-     */
-    update : function (dt) {
-
-        // apply physics to the body (this moves the entity)
-        this.body.update(dt);
-
-        // handle collisions against other shapes
-        me.collision.check(this);
-        // return true if we moved or if the renderable was updated
-        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
-
-       // this.renderable.setCurrentAnimation("close");
-    }
-});
 
 
 /**
@@ -367,15 +328,7 @@ game.fireEntity = me.Entity.extend({
         this.hurting=false;
         var fire=function()
         {
-
-            console.log(game.data.isHit);
-            if(game.data.isHit==true)
-            {
-                game.data.playerHealth=game.data.playerHealth-1;
-                game.data.isHit=false;
-            }
             self.renderable.setCurrentAnimation("fire","idle");
-            console.log(game.data.playerHealth);
         };
         this.interval = me.timer.setInterval(fire, 3000);
 
@@ -386,10 +339,6 @@ game.fireEntity = me.Entity.extend({
      */
     update : function (dt) {
 
-            if(game.data.playerHealth==0)
-            {
-                me.state.change(me.state.OVER);
-            }
 
         return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
 
@@ -406,6 +355,19 @@ game.fireEntity = me.Entity.extend({
 
         if(this.renderable.isCurrentAnimation("fire"))
         {
+            response.b.renderable.flicker(500,function(){
+                if(game.data.isHit==true)
+                {
+                    game.data.playerHealth=game.data.playerHealth-1;
+                    game.data.isHit=false;
+
+                    if(game.data.playerHealth==0)
+                    {
+                        me.state.change(me.state.OVER);
+                    }
+                    console.log("hit");
+                }
+            });
             me.game.viewport.shake(10, 500, me.game.viewport.AXIS.BOTH);
             game.data.isHit=true;
         }
@@ -434,7 +396,7 @@ game.Arrow = me.Entity.extend({
         this._super(me.Entity, 'init', [me.game.world.getChildByName("mainPlayer")[0].pos.x+20, me.game.world.getChildByName("mainPlayer")[0].pos.y+20, settings]);
         this.body.setVelocity(15, 15);
         this.body.vel.y=-15;
-        this.alwaysUpdate=true;
+
     },
 
     update : function (dt) {
@@ -450,28 +412,23 @@ game.Arrow = me.Entity.extend({
         me.collision.check(this);
 
         // return true if we moved or if the renderable was updated
-        return true;
+
+        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
     },
 
-   /**
-     * colision handler
-     * (called when colliding with other objects)
-     */
-
-    onCollision : function (response, other) {
-                console.log("collision");
+        onCollision : function (response, other) {
+            console.log("collision");
         switch (response.b.body.collisionType) {
-            case me.collision.types.WORLD_SHAPE:
 
-                break;
 
             case me.collision.types.ENEMY_OBJECT:
-                    
-                console.log("enemy");
+                    console.log("enemy")
+    
                 return false;
                 break;
 
             default:
+                console.log('norm');
                 // Do not respond to other objects (e.g. coins)
                 return false;
         }
@@ -480,5 +437,38 @@ game.Arrow = me.Entity.extend({
         return true;
     }
 
+});
 
+
+/**
+ * Final Boss Entity
+ */
+game.finalBossEntity = me.Entity.extend({
+
+    /**
+     * constructor
+     */
+    init:function (x, y, settings) {
+        settings.image="finalboss";
+        this.isArrow="arrow";
+
+        this._super(me.Entity, 'init', [x, y , settings]);
+
+        this.renderable.addAnimation("move",  [0,1,2]);
+        this.renderable.setCurrentAnimation("move",500);
+        this.z=5;
+        this.alwaysUpdate=true;
+        this.renderable.alwaysUpdate=true;
+        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
+    },
+    /**
+     * update the entity
+     */
+    update : function (dt) {
+
+
+        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
+
+
+    },
 });

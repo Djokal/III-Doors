@@ -11,7 +11,7 @@ var game = {
         currentDoor:undefined,
         trynum: 0,
         mainPlayer:undefined,
-        playerHealth:2,
+        playerHealth:3,
         isHit:false,
     },
 
