@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="room" tilewidth="40" tileheight="40">
+  <image source="../img/VILINT.png" width="640" height="480"/>
+ </tileset>
+ <tileset firstgid="193" name="Dungeon_A2" tilewidth="40" tileheight="40">
+  <image source="../img/Dungeon_A2.png" width="640" height="480"/>
+ </tileset>
+ <layer name="layers" width="16" height="12">
+  <data encoding="base64">
+   EgAAABcAAAAVAAAAFwAAABcAAAAVAAAAFwAAABcAAAAVAAAAFwAAABUAAAAXAAAAFQAAABcAAAAXAAAAGgAAACIAAAAnAAAAJQAAACcAAAAnAAAAJQAAACcAAAAnAAAAJQAAACcAAAAlAAAAJwAAACUAAAAnAAAAJwAAACoAAAAyAAAANwAAADUAAAA3AAAANwAAADUAAAA3AAAANwAAADUAAAA3AAAANQAAADcAAAA1AAAANwAAADcAAAA6AAAAUgAAAPEAAAAFAQAABgEAAPEAAADxAAAABQEAAAYBAADxAAAA9QAAAPEAAAD1AAAA8QAAAAUBAAAGAQAAWgAAAHIAAAABAQAAFQEAABYBAAABAQAA9QAAABUBAAAWAQAAAQEAAAEBAADyAAAA8gAAAAEBAAAVAQAAFgEAAFoAAABSAAAA9QAAABEBAAD1AAAAEQEAABEBAAD5AAAAEQEAAPUAAAARAQAA9QAAAPIAAAARAQAAEQEAABIBAAB6AAAAUgAAAPEAAADxAAAA8QAAAPEAAAD1AAAA8QAAAPEAAADxAAAA8QAAAPIAAADyAAAA8QAAAAkBAAAKAQAAegAAAHIAAAAFAQAABgEAAPUAAAABAQAA8QAAAPEAAAAFAQAABgEAAPEAAAAFAQAA9gAAAPYAAAAZAQAAGgEAAHoAAACSAAAAFQEAABYBAAARAQAA8QAAAPUAAAARAQAAFQEAABYBAADxAAAAFQEAAPYAAAD2AAAAFgEAAPIAAACaAAAAogAAAKMAAAClAAAApwAAAKUAAACnAAAApwAAAKUAAACnAAAApQAAAKcAAACnAAAApQAAAKcAAACpAAAAqgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  </data>
+ </layer>
+ <objectgroup color="#ea0003" name="collision">
+  <object x="1" y="361" width="637" height="35"/>
+  <object x="601" y="-1" width="35" height="400"/>
+  <object x="0" y="-1" width="40" height="398"/>
+  <object x="-5" y="-1" width="128" height="91"/>
+  <object x="196.333" y="-2.33333" width="85" height="93.3333"/>
+  <object x="515.333" y="-1.33333" width="89.3333" height="90.3333"/>
+  <object x="356.667" y="0" width="87.6667" height="89.3333"/>
+  <object x="11" y="11" width="600" height="49"/>
+  <object x="251" y="213" width="19" height="17">
+   <ellipse/>
+  </object>
+  <object x="532" y="252" width="58" height="58"/>
+ </objectgroup>
+ <objectgroup color="#aaff7f" name="entities">
+  <object name="mainPlayer" x="300" y="300" width="40" height="40">
+   <properties>
+    <property name="spritewidth" value="40"/>
+   </properties>
+  </object>
+  <object name="doorEntity" x="120" y="40" width="80" height="80">
+   <properties>
+    <property name="id" value="0"/>
+    <property name="spritewidth" value="80"/>
+   </properties>
+  </object>
+  <object name="doorEntity" x="440" y="40" width="80" height="80">
+   <properties>
+    <property name="id" value="2"/>
+    <property name="spritewidth" value="80"/>
+   </properties>
+  </object>
+  <object name="doorEntity" x="280" y="40" width="80" height="80">
+   <properties>
+    <property name="id" value="1"/>
+    <property name="spritewidth" value="80"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <imagelayer name="Calque d'image 1">
+  <image source="../img/4.png"/>
+ </imagelayer>
+</map>
