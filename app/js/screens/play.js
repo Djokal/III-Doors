@@ -6,7 +6,7 @@ game.PlayScreen = me.ScreenObject.extend({
         // reset the score
         game.data.score = 0;
     // load a level
-    me.levelDirector.loadLevel("intro");
+    me.levelDirector.loadLevel("room0");
   //  me.Viewport.follow(game.PlayerEntity.pos, me.game.Viewport.AXIS.VERTICAL);
         // add our HUD to the game world
         this.HUD = new game.HUD.Container();
@@ -21,6 +21,13 @@ game.PlayScreen = me.ScreenObject.extend({
         ];
         game.data.finalroom=3;
         game.data.prefinalroom=[5,1];
+
+        game.data.score = 0;
+        game.data.currentRoom=0;
+        game.data.currentDoor=undefined;
+        game.data.trynum= 0;
+        game.data.playerHealth=3;
+        game.data.isHit=false;
     },
 
     /**

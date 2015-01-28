@@ -51,13 +51,10 @@ var game = {
         me.input.bindKey(me.input.KEY.D, "right");
         me.input.bindKey(me.input.KEY.Z, "up");
         me.input.bindKey(me.input.KEY.S, "down");
-        me.input.bindKey(me.input.KEY.X, "shoot");
         me.sys.gravity=null;
         me.state.set(me.state.MENU, new game.TitleScreen());
   // set the "Play/Ingame" Screen Object
         me.state.set(me.state.PLAY, new game.PlayScreen());
-        me.state.set(me.state.WIN, new game.WinScreen());
-        me.state.set(me.state.OVER, new game.OverScreen());
   // set a global fading transition for the screen
         me.state.transition("fade", "#000000", 300);
     // Run on game resources loaded.

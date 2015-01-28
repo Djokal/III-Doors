@@ -21,7 +21,9 @@ game.doorEntity = me.Entity.extend({
         this.renderable.addAnimation("open",  [0,1,2,3]);
         this.renderable.addAnimation("close",  [3,2,1,0]);
         this.renderable.setCurrentAnimation("closed");
-        this.z=5;
+        this.z=4;
+        this.body.removeShape(this.body.getShape());
+        this.body.addShape( new me.Rect( this.body.pos.x, this.body.pos.y+34, 80, 10 ) );
     },
 
     /**
@@ -69,21 +71,21 @@ game.PlayerEntity = me.Entity.extend({
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         this.body.collisionType = me.collision.types.PLAYER_OBJECT;
         this.body.setVelocity(3, 3);
+        self=this;
+        self.canShoot=true;
     },
 
     /**
      * update the entity
      */
     update : function (dt) {
-
-
-        if (me.input.isKeyPressed('shoot'))
+        if (me.input.isKeyPressed('shoot')&&self.canShoot==true)
         {
 
             var arrow=me.pool.pull("arrow");
 
             me.game.world.addChild(arrow,20);
-            me.input.unbindKey(me.input.KEY.X, "shoot");
+            self.canShoot=false;
 
             Cooldown.timer = 500;
             cd = new me.Tween(Cooldown)
@@ -97,7 +99,7 @@ game.PlayerEntity = me.Entity.extend({
 
                 .onComplete(function onComplete() 
                 {   
-                    me.input.bindKey(me.input.KEY.X, "shoot");
+                    self.canShoot=true;
                 })
                 .start();
         }
@@ -184,9 +186,14 @@ game.PlayerEntity = me.Entity.extend({
                             }
                             else
                             {*/
+                            game.data.currentRoom=nextRoom;
+                            if( game.data.currentRoom==6)
+                            {
+                                me.input.bindKey(me.input.KEY.X, "shoot");
+                            }
                                 me.levelDirector.loadLevel("room"+nextRoom);
                            //}
-                            game.data.currentRoom=nextRoom;
+
                         });
                 }
     
@@ -327,15 +334,15 @@ game.fireEntity = me.Entity.extend({
         this.hurting=false;
         var fire=function()
         {
-            self.renderable.setCurrentAnimation("fire","idle");
+            if(self.renderable)
+            {
+                self.renderable.setCurrentAnimation("fire","idle");
+            }
         };
         this.interval = me.timer.setInterval(fire, 3000);
 
     },
 
-    /**
-     * update the entity
-     */
     update : function (dt) {
 
 
@@ -344,15 +351,8 @@ game.fireEntity = me.Entity.extend({
 
     },
 
-
-   /**
-     * colision handler
-     * (called when colliding with other objects)
-     */
     onCollision : function (response, other) {
-        // Make all other objects solid
 
-                    console.log("firecol");
         if(this.renderable.isCurrentAnimation("fire"))
         {
             response.b.renderable.flicker(500,function(){
@@ -363,9 +363,9 @@ game.fireEntity = me.Entity.extend({
 
                     if(game.data.playerHealth==0)
                     {
+                        me.state.set(me.state.OVER, new game.OverScreen());
                         me.state.change(me.state.OVER);
                     }
-                    console.log("hit");
                 }
             });
             me.game.viewport.shake(10, 500, me.game.viewport.AXIS.BOTH);
@@ -418,23 +418,23 @@ game.Arrow = me.Entity.extend({
     },
 
         onCollision : function (response, other) {
-            console.log("collision");
         switch (response.b.body.collisionType) {
 
 
             case me.collision.types.ENEMY_OBJECT:
-                    console.log("enemy")
-    
+                    me.game.world.removeChild(this);
+                    response.b.health=response.b.health-1;
+                    if(response.b.health==0)
+                    {
+                        me.state.set(me.state.WIN, new game.WinScreen());
+                        me.state.change(me.state.WIN);
+                    }
                 return false;
                 break;
 
             default:
-                console.log('norm');
-                // Do not respond to other objects (e.g. coins)
                 return false;
         }
-
-        // Make the object solid
         return true;
     }
 
@@ -446,13 +446,10 @@ game.Arrow = me.Entity.extend({
  */
 game.finalBossEntity = me.Entity.extend({
 
-    /**
-     * constructor
-     */
     init:function (x, y, settings) {
         settings.image="finalboss";
         this.isArrow="arrow";
-
+        this.health=25;
         this._super(me.Entity, 'init', [x, y , settings]);
 
         this.renderable.addAnimation("move",  [0,1,2]);
@@ -462,9 +459,6 @@ game.finalBossEntity = me.Entity.extend({
         this.renderable.alwaysUpdate=true;
         this.body.setCollisionMask(me.collision.types.PROJECTILE_OBJECT);
     },
-    /**
-     * update the entity
-     */
     update : function (dt) {
 
 
