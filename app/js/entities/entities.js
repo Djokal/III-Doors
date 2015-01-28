@@ -67,6 +67,7 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation("up",  [9,10,11]);
         this.renderable.addAnimation("hidden", [12]);
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        this.body.collisionType = me.collision.types.PLAYER_OBJECT;
         this.body.setVelocity(3, 3);
     },
 
@@ -269,6 +270,7 @@ game.holeEntity = me.Entity.extend({
         this.renderable.addAnimation("open",  [0,1,2,3,4,5,6,7,8,9]);
         this.renderable.addAnimation("empty",  [11]);
         this.renderable.setCurrentAnimation("empty");
+        this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
     },
     startAnim:function()
     {
@@ -293,9 +295,6 @@ game.holeEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
-        // Make all other objects solid
-
-        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
         return false;
     }
 });
@@ -322,7 +321,7 @@ game.fireEntity = me.Entity.extend({
         this.renderable.addAnimation("idle",  [3]);
         this.renderable.setCurrentAnimation("idle");
         this.z=5;
-
+        this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
         var self=this;
         game.data.isHit=false;
         this.hurting=false;
@@ -394,8 +393,10 @@ game.Arrow = me.Entity.extend({
         settings.height=34;
         settings.image=me.loader.getImage('arrow');
         this._super(me.Entity, 'init', [me.game.world.getChildByName("mainPlayer")[0].pos.x+20, me.game.world.getChildByName("mainPlayer")[0].pos.y+20, settings]);
+        this.body.addShape(new me.Rect(0, 0, this.width, this.height));
         this.body.setVelocity(15, 15);
         this.body.vel.y=-15;
+        this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
 
     },
 
@@ -459,7 +460,7 @@ game.finalBossEntity = me.Entity.extend({
         this.z=5;
         this.alwaysUpdate=true;
         this.renderable.alwaysUpdate=true;
-        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
+        this.body.setCollisionMask(me.collision.types.PROJECTILE_OBJECT);
     },
     /**
      * update the entity
