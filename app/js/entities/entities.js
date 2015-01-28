@@ -352,6 +352,7 @@ game.fireEntity = me.Entity.extend({
     onCollision : function (response, other) {
         // Make all other objects solid
 
+                    console.log("firecol");
         if(this.renderable.isCurrentAnimation("fire"))
         {
             response.b.renderable.flicker(500,function(){
@@ -370,7 +371,6 @@ game.fireEntity = me.Entity.extend({
             me.game.viewport.shake(10, 500, me.game.viewport.AXIS.BOTH);
             game.data.isHit=true;
         }
-        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
         return false;
     }
 
