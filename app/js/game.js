@@ -47,10 +47,10 @@ var game = {
     // Run on game resources loaded.
     "loaded" : function () {
         
-        me.input.bindKey(me.input.KEY.Q, "left");
-        me.input.bindKey(me.input.KEY.D, "right");
-        me.input.bindKey(me.input.KEY.Z, "up");
-        me.input.bindKey(me.input.KEY.S, "down");
+        me.input.bindKey(me.input.KEY.LEFT, "left");
+        me.input.bindKey(me.input.KEY.RIGHT, "right");
+        me.input.bindKey(me.input.KEY.UP, "up");
+        me.input.bindKey(me.input.KEY.DOWN, "down");
         me.sys.gravity=null;
         me.state.set(me.state.MENU, new game.TitleScreen());
   // set the "Play/Ingame" Screen Object

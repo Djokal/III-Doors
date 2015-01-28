@@ -23,7 +23,9 @@ game.doorEntity = me.Entity.extend({
         this.renderable.setCurrentAnimation("closed");
         this.z=4;
         this.body.removeShape(this.body.getShape());
-        this.body.addShape( new me.Rect( this.body.pos.x, this.body.pos.y+34, 80, 10 ) );
+        this.body.addShape( new me.Rect( this.body.pos.x, this.body.pos.y, 80, 10 ) );
+        
+        this.anchorPoint.set(0.5, 0);
     },
 
     /**

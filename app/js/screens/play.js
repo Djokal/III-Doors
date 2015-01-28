@@ -6,7 +6,7 @@ game.PlayScreen = me.ScreenObject.extend({
         // reset the score
         game.data.score = 0;
     // load a level
-    me.levelDirector.loadLevel("room0");
+    me.levelDirector.loadLevel("intro");
   //  me.Viewport.follow(game.PlayerEntity.pos, me.game.Viewport.AXIS.VERTICAL);
         // add our HUD to the game world
         this.HUD = new game.HUD.Container();
