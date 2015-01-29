@@ -366,6 +366,10 @@ game.fireEntity = me.Entity.extend({
                         me.state.set(me.state.OVER, new game.OverScreen());
                         me.state.change(me.state.OVER);
                     }
+                    else
+                    {
+                        game.data.playerHealthImage.setCurrentAnimation(game.data.playerHealth);
+                    }
                 }
             });
             me.game.viewport.shake(10, 500, me.game.viewport.AXIS.BOTH);

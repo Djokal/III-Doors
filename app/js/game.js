@@ -13,6 +13,7 @@ var game = {
         mainPlayer:undefined,
         playerHealth:3,
         isHit:false,
+        playerHealthImage:undefined,
     },
 
 

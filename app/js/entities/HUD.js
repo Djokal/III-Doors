@@ -23,11 +23,26 @@ game.HUD.Container = me.Container.extend({
         // give a name
         this.name = "HUD";
 
-        // add our child score object at the top left corner
         this.addChild(new game.HUD.ScoreItem(5, 5));
     }
 });
 
+
+    game.HUD.playerHealth = me.AnimationSheet.extend({
+        init: function() {
+            this._super(me.AnimationSheet, "init", [10,10, {
+                image: me.loader.getImage('health'),
+                spritewidth: 80,
+                spriteheight: 20
+            }]);
+            this.addAnimation('3', [0]);
+            this.addAnimation('2', [1]);
+            this.addAnimation('1', [2]);
+            this.addAnimation('0', [2]);
+            this.setCurrentAnimation('3');
+            this.z = 1;
+        }
+    });
 
 /**
  * a basic HUD item to display score

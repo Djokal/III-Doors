@@ -32,6 +32,7 @@ game.resources = [
     {name: "4", type:"image", src: "data/img/4.png"},
     {name: "win", type:"image", src: "data/img/win.png"},
     {name: "over", type:"image", src: "data/img/over.png"},
+    {name: "health", type:"image", src: "data/img/health.png"},
     /* Texture Atlases
      * @example
      * {name: "texture", type: "json", src: "data/img/example_tps.json"},
