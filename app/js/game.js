@@ -14,6 +14,7 @@ var game = {
         playerHealth:3,
         isHit:false,
         playerHealthImage:undefined,
+        finalbosshealth:0,
     },
 
 

@@ -213,6 +213,8 @@ game.PlayerEntity = me.Entity.extend({
 
 
 
+
+
 /**
  * Treasure Entity
  */
@@ -427,8 +429,8 @@ game.Arrow = me.Entity.extend({
 
             case me.collision.types.ENEMY_OBJECT:
                     me.game.world.removeChild(this);
-                    response.b.health=response.b.health-1;
-                    if(response.b.health==0)
+                    response.b.health=response.b.health-6;
+                    if(response.b.health<1)
                     {
                         me.state.set(me.state.WIN, new game.WinScreen());
                         me.state.change(me.state.WIN);
@@ -453,17 +455,29 @@ game.finalBossEntity = me.Entity.extend({
     init:function (x, y, settings) {
         settings.image="finalboss";
         this.isArrow="arrow";
-        this.health=25;
+        this.health=160;
         this._super(me.Entity, 'init', [x, y , settings]);
 
-        this.renderable.addAnimation("move",  [0,1,2]);
-        this.renderable.setCurrentAnimation("move",500);
         this.z=5;
-        this.alwaysUpdate=true;
-        this.renderable.alwaysUpdate=true;
         this.body.setCollisionMask(me.collision.types.PROJECTILE_OBJECT);
+
+        this.renderable = new me.Container(0,0,100,100);
+        this.renderables = {bossSheet: 0,hpbar:0};
+        this.renderables.hpbar=new healthbar(0,0,100,20);
+        this.renderable.addChild(this.renderables.hpbar);
+        this.renderables.bossSheet = new finalBossAnimationSheet();
+        this.renderable.addChild(this.renderables.bossSheet);
+
+        this.renderables.bossSheet.setCurrentAnimation("move",500);
+        this.alwaysUpdate=true;
+        this.renderable.alwaysUpdate = true;
+        console.log( this.renderable);
+        console.log( this.renderables.hpbar);
+                                me.input.bindKey(me.input.KEY.X, "shoot");
+
     },
     update : function (dt) {
+        game.data.finalbossHealth=this.health;
 
 
         return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
@@ -471,3 +485,46 @@ game.finalBossEntity = me.Entity.extend({
 
     },
 });
+
+
+
+var finalBossAnimationSheet = me.AnimationSheet.extend(
+{
+    init: function()
+    {
+        var settings=[];
+        settings.spritewidth=80;
+        settings.spriteheight=80;
+        settings.image=me.loader.getImage('finalboss');
+        this._super(me.AnimationSheet, 'init', [10, 0 , settings]);
+        this.z = 8;
+
+        this.addAnimation("move",  [0,1,2]);
+        }   
+    });
+
+
+
+var healthbar = me.Renderable.extend(
+{
+    init: function(x, y, w, h) 
+    {
+        
+        this._super(me.Renderable, 'init', [x, y, w, h]);
+        this.alwaysUpdate = true;
+        this.z=80;
+        
+    },
+    update: function (dt)
+    {
+        return this._super(me.Renderable, 'update', [dt]);
+    },
+    draw: function(renderer)
+    {
+        renderer.setColor('#FF0000');
+        renderer.fillRect(this.pos.x-30, this.pos.y, 160, 5);
+        renderer.setColor('#40FF00');
+        renderer.fillRect(this.pos.x-30, this.pos.y,game.data.finalbossHealth, 5);
+    }
+});
+
